@@ -1,0 +1,5 @@
+improve Doctor 
+====================================================
+home, register, login  =>  without (Auth).
+=====================================================
+addArticle, reply, seeArticles, 
