@@ -1,0 +1,17 @@
+.page {
+  display: flex;
+}
+
+.nav {
+  width: 220px;
+  box-shadow: 0 0 10px #ddd;
+  height: 100vh;
+  position: relative;
+  padding: 20px;
+  display: block;
+}
+.content {
+  height: 100vh;
+  background-color: #f1f5f9;
+  padding: 10px;
+}

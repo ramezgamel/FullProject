@@ -1,0 +1,18 @@
+<div class="container">
+  <h2 class="text-center my-2">Booking Form</h2>
+  <form #bookingForm="ngForm">
+    <div class="form-group my-2">
+      <label for="patientName">Patient Name:</label>
+      <input type="text" class="form-control" name="patientName" ngModel>
+    </div>
+    <div class="form-group my-2">
+      <label for="docName">Doctor Name:</label>
+      <input type="text" class="form-control" name="docName" ngModel>
+    </div>
+    <div class="form-group my-2">
+      <label for="date">Date:</label>
+      <input type="date" class="form-control" name="date" ngModel>
+    </div>
+    <button class="btn btn-success my-2">Booking</button>
+  </form>
+</div>

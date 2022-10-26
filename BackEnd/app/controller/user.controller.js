@@ -1,12 +1,11 @@
 const articleModel = require("../dateBase/models/article.model");
+const bookingModel = require("../dateBase/models/booking.model");
 const userModel = require("../dateBase/models/user.model");
 const resBuilder = require("../helper/resBuilder.helper");
 
 class User {
   static register = async (req, res) => {
     try {
-      if (!(await userModel.find({ email: req.body.email })))
-        throw new Error("Email invalid");
       const user = userModel(req.body);
       await user.save();
       resBuilder(res, true, user, "registered");
@@ -103,12 +102,23 @@ class User {
   static deleteProfile = async (req, res) => {
     try {
       const user = await userModel.findById(req.user.id);
-      await user.remove()
+      await user.remove();
       resBuilder(res, true, user, "Added");
     } catch (e) {
       resBuilder(res, false, e, e.message);
     }
   };
+
+  static getAppointment = async (req, res) => {
+    try {
+      const appointment = bookingModel(req.body)
+      await appointment.save()
+      resBuilder(res, true, appointment, "Added");
+    } catch (e) {
+      resBuilder(res, false, e, e.message);
+    }
+  }
+
 }
 
 module.exports = User;

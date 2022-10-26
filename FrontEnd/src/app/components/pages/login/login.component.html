@@ -1,0 +1,26 @@
+<div class="container">
+  <h2 class="text-center">Login Form</h2>
+  <div class="alert alert-dange" *ngIf="error">
+    {{error}}
+  </div>
+  <div *ngIf="isLoading" style="text-align: center;">
+    <app-LoadingSpinner></app-LoadingSpinner>
+  </div>
+  <form #login="ngForm" (ngSubmit)="handleLogin(login)" *ngIf="!isLoading">
+    <div class="form-group">
+      <label for="email">Email :</label>
+      <input type="email" name="email" class="form-control my-1" ngModel required #email="ngModel">
+    </div>
+    <div class="alert alert-danger" *ngIf="email.invalid && email.touched || login.submitted">
+        <div *ngIf="email.errors?.['required']">Email Required</div>
+      </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" name="password" class="form-control my-1" ngModel required #password="ngModel">
+      <div class="alert alert-danger" *ngIf="password.invalid && password.touched || login.submitted">
+        <div *ngIf="password.errors?.['required']">Password Required</div>
+      </div>
+    </div>
+    <button class="btn btn-success">Login</button>
+  </form>
+</div>

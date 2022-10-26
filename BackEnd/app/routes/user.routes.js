@@ -8,6 +8,7 @@ router.post("/register", User.register);
 router.post("/login", User.login);
 router.post("/logout", Auth, User.logout);
 router.post("/logoutAll", Auth, User.logoutAll);
+router.post("/booking", Auth, User.getAppointment);
 
 
 router.get("/profile",Auth ,User.profile);
