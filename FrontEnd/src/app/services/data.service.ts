@@ -6,19 +6,14 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DataService {
-  api:string = "localhost:4000/article"
+  api:string = "http://localhost:4000/article/"
   constructor(private _Http: HttpClient) { 
 
   }
 
-  register(data: any): Observable<any>{
-      return this._Http.post("http://localhost:4000/register", data)
-    }
-
-  loginUser(data: any): Observable<any>{
-    return this._Http.post("http://localhost:4000/login", data)
-  }
-
+  getAll(): Observable<any>{
+    return this._Http.get(`${this.api}all`)
+  };
   
 
 

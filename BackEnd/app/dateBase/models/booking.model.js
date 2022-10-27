@@ -1,24 +1,30 @@
 const mongoose = require("mongoose")
 
 const bookingSchema = mongoose.Schema({
+  patientId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
+  },
+  doctorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "Doctor",
+  },
   patientName: {
     type: String,
     required: true,
     trim: true,
   },
-  docName: {
+  doctorName: {
     type: String,
     required: true,
     trim: true,
   },
-  date:{
+  date: {
     type: Date,
-    required: true
+    required: true,
   },
-  // time: {
-  //   type: Date,
-  //   required: true
-  // }
 });
 
 

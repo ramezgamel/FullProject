@@ -3,6 +3,56 @@
   <div *ngIf="isLoading" style="text-align: center;">
     <app-LoadingSpinner></app-LoadingSpinner>
   </div>
+
+  <form [formGroup]="registerForm" (ngSubmit)="handleForm()"> 
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" class="form-control my-2" formControlName="name" placeholder="Name">
+      <div class="alert alert-danger" *ngIf="name?.errors && (name?.touched || isSubmitted)">
+        <div *ngIf="name?.errors?.['required']">Name Required</div>
+        <div *ngIf="name?.errors?.['minLength']">min length 3</div>
+        <div *ngIf="name?.errors?.['maxLength']">max length 20</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" class="form-control my-2" formControlName="email" placeholder="email" >
+      <div class="alert alert-danger" *ngIf="email?.errors && (email?.touched || isSubmitted)">
+        <div *ngIf="email?.errors?.['required']">email Required</div>
+        <div *ngIf="email?.errors?.['email']">min length 3</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" class="form-control my-2" formControlName="password" placeholder="password">
+      <div class="alert alert-danger" *ngIf="password?.errors && (password?.touched || isSubmitted)">
+        <div *ngIf="password?.errors?.['required']">Password Is Required</div>
+        <div *ngIf="password?.errors?.['pattern']">Password should have many type of chr</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="gender">Gender</label>
+      <input type="text" class="form-control my-2" formControlName="gender" placeholder="gender">
+    </div>
+    <div class="form-group">
+      <label for="dateOfBirth">Date of Birth:</label>
+      <input type="date" class="form-control my-2" formControlName="dateOfBirth" placeholder="date">
+      <div class="alert alert-danger" *ngIf="dateOfBirth?.errors && (dateOfBirth?.touched || isSubmitted)">
+        <div *ngIf="dateOfBirth?.errors?.['required']">Date of Birth Is Required</div>
+      </div>
+    </div>
+    <button class="btn btn-success">Submit</button>
+  </form>
+
+
+  <div class="alert alert-danger" *ngIf="error">
+    {{error}}
+  </div>
+</div>
+
+
+
+<!-- 
   <form #register="ngForm" (ngSubmit)="handleForm(register)"> 
     <div class="form-group">
       <label for="name">Name:</label>
@@ -38,8 +88,4 @@
       <input type="date" class="form-control my-2" name="dateOfBirth" placeholder="date" ngModel required>
     </div>
     <button class="btn btn-success">Submit</button>
-  </form>
-  <div class="alert alert-danger" *ngIf="error">
-    {{error}}
-  </div>
-</div>
+  </form> -->

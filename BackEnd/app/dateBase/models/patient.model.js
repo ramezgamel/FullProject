@@ -31,23 +31,16 @@ const userSchema = mongoose.Schema(
       trim: true,
       required: true,
     },
-    userType: {
-      type: String,
-      enum: ["patient", "doctor"],
-      lowercase: true,
-      trim: true,
-      default: "patient",
-    },
     profileImg: {
       type: String,
       trim: true,
     },
-    ID: {
+    userType: {
       type: String,
+      lowercase: true,
       trim: true,
-      required: function () {
-        return this.userType == "doctor";
-      },
+      enum: ["patient", "doctor"],
+      required: true,
     },
     tokens: [{ token: { type: String, required: true } }],
     history: {
@@ -71,8 +64,6 @@ const userSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-
-
 userSchema.methods.toJSON = function () {
   const user = this.toObject();
   delete user.password;
@@ -86,12 +77,13 @@ userSchema.pre("save", async function () {
     this.password = await bcrypt.hash(this.password, 10);
 });
 
-userSchema.methods.checkPass = async function (user) {
-  return await bcrypt.compare(user.password, this.password);
+userSchema.methods.checkPass = async function (userPassword) {
+  return await bcrypt.compare(userPassword, this.password);
 };
 
-userSchema.methods.generate = async function () {
-  const token = jwt.sign({ _id: this._id }, process.env.JWTKEY);
+userSchema.methods.generateToken = async function () {
+  const token = jwt.sign({ _id: this._id, userType: this.userType }, process.env.JWTKEY
+  );
   this.tokens.push({ token });
   await this.save();
   return token;
@@ -100,14 +92,16 @@ userSchema.methods.generate = async function () {
 userSchema.pre("remove", async function () {
   await articleModel.deleteMany({ userId: this._id });
   const Articles = await articleModel.find();
-  Articles.forEach(async article => {
-    article.comments = article.comments.filter(c => c.userId.equals(this._id));
-    article.likes = article.likes.filter(l => l.userId.equals(this._id));
-    article.comments.forEach(async c => {
-      c.replays = c.replays.filter(r => r.userId.equals(this._id));
+  Articles.forEach(async (article) => {
+    article.comments = article.comments.filter((c) =>
+      c.userId.equals(this._id)
+    );
+    article.likes = article.likes.filter((l) => l.userId.equals(this._id));
+    article.comments.forEach(async (c) => {
+      c.replays = c.replays.filter((r) => r.userId.equals(this._id));
     });
     await article.save();
   });
 });
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("Patient", userSchema);

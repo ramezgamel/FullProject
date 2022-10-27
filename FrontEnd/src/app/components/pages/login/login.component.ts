@@ -1,6 +1,7 @@
+import { Router } from '@angular/router';
+import { AuthService } from './../../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { DataService } from 'src/app/services/data.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -9,17 +10,31 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class LoginComponent implements OnInit {
   isLoading = false;
-  error:string = ''
+  error:string = '';
+  isSubmitted = false;
 
-  constructor(private _data:DataService) { }
+  loginForm = new FormGroup({
+    email: new FormControl("",[Validators.required, Validators.email]),
+    password: new FormControl("", [Validators.required]
+    // Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)
+    )
+  });
+  get email(){return this.loginForm.get('email')}
+  get password(){return this.loginForm.get('password')}
+  
+  constructor(private _Auth:AuthService, private _router:Router) { }
 
-  handleLogin(form: NgForm){
-    if(form.invalid) return;
+  handleLogin(){
+    this.isSubmitted = true
     this.isLoading = true
-    this._data.loginUser(form.value).subscribe(
+    if(this.loginForm.invalid) return;
+    this._Auth.loginUser(this.loginForm.value).subscribe(
       res=> {
-        console.log(res)
-        this.isLoading = false
+        localStorage.setItem("token", res.data.token)
+        this._Auth.isLoggedIn = true;
+        this._Auth.myUser = res.data.user
+        this.isLoading = false;
+        this._router.navigate(['/profile'])
       },
       err => {
         this.error = err.error.message

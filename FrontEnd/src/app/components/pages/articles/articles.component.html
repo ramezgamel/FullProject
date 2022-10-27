@@ -1,1 +1,8 @@
-<h2>Articles is running</h2>
+<div *ngFor="let article of articles" routerLink="/single" style="cursor: pointer;" class="p-3 m-3 bg-white">
+  <h2>{{article?.['title']}}</h2>
+  <hr>
+  <h2>{{article?.['body']}}</h2>
+  <div *ngIf="let c of article.comments">
+    <!-- <h4>{{c?.['comment']}}</h4> -->
+  </div>
+</div>

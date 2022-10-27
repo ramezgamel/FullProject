@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { DataService } from 'src/app/services/data.service';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { User } from 'src/app/interfaces/user';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -9,25 +11,40 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class RegisterComponent implements OnInit {
   isLoading = false;
-  error:string = ''
-  user: any = {
-    name:"ramez",
-    email:"ramge@test.com",
-    password:"54654",
-    userName:"ramezgamel"
-  }
-  constructor(private _data:DataService) { }
+  error:string = '';
+  isSubmitted = false
+  
+  registerForm = new FormGroup({
+    name: new FormControl("", [Validators.required, Validators.minLength(3)]),
+    email: new FormControl("", [Validators.required, Validators.email]),
+    password: new FormControl("", [Validators.required]),
+    // Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)
+    gender: new FormControl("", [Validators.required]),
+    dateOfBirth: new FormControl("", [Validators.required])
+  });
+
+  get name() {return this.registerForm.get("name")};
+  get email() {return this.registerForm.get("email")};
+  get password() {return this.registerForm.get("password")};
+  get gender() {return this.registerForm.get("gender")};
+  get dateOfBirth() {return this.registerForm.get("dateOfBirth")};
+
+  constructor(private _data:AuthService, 
+      private _router:Router) { }
   
   ngOnInit(): void {
   }
 
-  handleForm(form:NgForm){
-    if(form.invalid) return;
+  handleForm(){
+    console.log(this.registerForm.value)
+    this.isSubmitted= true;
+    if(this.registerForm.invalid) return;
     this.isLoading = true
-    this._data.register(form.value).subscribe(
+    let data : User|any = this.registerForm.value
+    this._data.register(data).subscribe(
       res => {
-        console.log(res)
-        this.isLoading = false
+        this.isLoading = false;
+        this._router.navigate(['login'])
       }, 
       err => {
         this.error = err;

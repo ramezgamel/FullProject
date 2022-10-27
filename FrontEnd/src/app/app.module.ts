@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from "@angular/common/http";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +14,9 @@ import { SingleArticleComponent } from './components/pages/single-article/single
 import { LoadingSpinnerComponent } from './components/shared/loading-spinner/LoadingSpinner.component';
 import { ProfileComponent } from './components/pages/profile/profile.component';
 import { BookingComponent } from './components/pages/booking/booking.component';
+import { Error404Component } from './components/shared/error404/error404.component';
+import { AuthInterceptor } from './auth.interceptor';
+import { EditComponent } from './components/pages/edit/edit.component';
 
 @NgModule({
   declarations: [
@@ -26,15 +29,22 @@ import { BookingComponent } from './components/pages/booking/booking.component';
     SingleArticleComponent,
     LoadingSpinnerComponent,
     ProfileComponent,
-    BookingComponent
+    BookingComponent,
+    Error404Component,
+    EditComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [{
+    provide:HTTP_INTERCEPTORS,
+    useClass:AuthInterceptor,
+    multi:true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

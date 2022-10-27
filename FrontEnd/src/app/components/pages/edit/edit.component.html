@@ -1,0 +1,6 @@
+<form [formGroup]="editForm" (ngSubmit)="editProfile()">
+  <input type="text" formControlName="name" class="form-control my-2">
+  <input type="text" formControlName="gender" class="form-control my-2">
+  <input type="date" formControlName="dateOfBirth" class="form-control my-2">
+  <button class="btn btn-success" >Submit</button>
+</form>

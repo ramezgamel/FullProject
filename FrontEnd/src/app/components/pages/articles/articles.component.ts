@@ -12,7 +12,15 @@ export class ArticlesComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.getData()
+  }
 
+  getData() {
+    this._data.getAll().subscribe(
+      res => {
+        this.articles = res.data
+      }
+    )
   }
 
 }
