@@ -27,6 +27,15 @@ module.exports = class Article {
     }
   };
 
+  static getByCategory = async (req, res) => {
+    try {
+      const articles = await articleModel.find({category: req.params.category});
+      resBuilder(res, true, articles, "Articles Ready");
+    } catch (e) {
+      resBuilder(res, false, e, e.message);
+    }
+  };
+
   static single = async (req, res) => {
     try {
       const articleId = req.params.articleId.slice(0, -1);

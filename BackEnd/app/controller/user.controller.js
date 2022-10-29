@@ -115,7 +115,7 @@ class User {
       resBuilder(res, false, e, e.message);
     }
   };
-          // Start New Work From Here
+  // Start New Work From Here
   static editProfile = async (req, res) => {
     try {
       const noEdit = ["email", "password", "tokens"];
@@ -142,9 +142,41 @@ class User {
 
   static getAppointment = async (req, res) => {
     try {
-      const appointment = bookingModel(req.body);
+      const patient = await patientModel.findById(req.user._id);
+      if (!patient) throw new Error("Register as Patient");
+      const doctor = await doctorModel.findById(req.params.doctorId);
+      if (!doctor) throw new Error("Invalid doctor Id");
+      const appointment = bookingModel({
+        ...req.body,
+        patientId: patient._id,
+        doctorId: doctor._id,
+      });
+      const checkAppoint = await bookingModel.findOne({
+        patientId: patient._id,
+        doctorId: doctor._id,
+      });
+      if (checkAppoint) throw new Error("You are booked before");
+      doctor.bookings.push(appointment);
       await appointment.save();
+      await doctor.save();
       resBuilder(res, true, appointment, "Added");
+    } catch (e) {
+      resBuilder(res, false, e, e.message);
+    }
+  };
+
+  static editHistory = async (req, res) => {
+    try {
+      const doctor = await doctorModel.findById(req.user._id);
+      const patient = await patientModel.findById(req.params.patientId);
+      const checkAppoint = await bookingModel.findOne({
+        patientId: patient._id,
+        doctorId: doctor._id,
+      });
+      if (!checkAppoint) throw new Error("Booking not found");
+      patient.history = patient.history.push(req.body);
+      await patient.save();
+      resBuilder(res, true, patient.history, "Added");
     } catch (e) {
       resBuilder(res, false, e, e.message);
     }

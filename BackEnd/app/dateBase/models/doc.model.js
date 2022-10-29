@@ -42,8 +42,8 @@ const doctorSchema = mongoose.Schema(
     specialty: [{ type: String, required: true }],
     addresses: [{ type: String, trim: true }],
     phone: { type: String },
-    Bookings: [
-      { patientName: { type: String, required: true }, date: { type: Date } },
+    bookings: [
+      { patientName: { type: String, required: true },patientId:{type:mongoose.Schema.Types.ObjectId} ,date: { type: Date } },
     ],
     tokens: [{ token: { type: String, required: true } }],
   },

@@ -34,5 +34,6 @@ async function AuthDoctor(req, res, next) {
   } catch (e) {
     resBuilder(res, false, e, e.message);
   }
+  
 }
 module.exports = { Auth, AuthDoctor };

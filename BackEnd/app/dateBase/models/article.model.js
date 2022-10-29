@@ -4,6 +4,7 @@ const articleSchema = mongoose.Schema(
   {
     userId: { type: mongoose.Schema.Types.ObjectId, required: true },
     title: { type: String, trim: true, required: true },
+    category:{type: String, required:true},
     body: { type: String, trim: true, required: true },
     photos: [{ type: String, trim: true }],
     likes: [{ userId: { type: mongoose.Schema.Types.ObjectId, required: true } }],

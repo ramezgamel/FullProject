@@ -4,6 +4,7 @@ const { Auth, AuthDoctor } = require("../middleware/auth.middleware");
 const upload = require("../middleware/upload.middleware");
 
 router.get("/all", Auth, Article.all);
+router.get("/all/:category", Auth, Article.getByCategory);
 router.get("/single/:articleId", Auth, Article.single);
 
 router.post("/add", Auth, upload.array("imgs", 9), Article.add);

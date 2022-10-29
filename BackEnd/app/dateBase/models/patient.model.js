@@ -43,23 +43,26 @@ const userSchema = mongoose.Schema(
       required: true,
     },
     tokens: [{ token: { type: String, required: true } }],
-    history: {
-      diagnosis: { type: String },
-      treatments: [
-        {
-          name: { type: String, required: true },
-          start: { type: Date, required: true },
-          end: { type: Date, required: true },
-        },
-      ],
-      analysis: [
-        {
-          type: { type: String, required: true },
-          date: { type: Date, required: true },
-          image: { type: String, required: true },
-        },
-      ],
-    },
+    history: [
+      {
+        diagnosis: { type: String },
+        treatments: [
+          {
+            name: { type: String, required: true },
+            start: { type: String, required: true, trim:true },
+            end: { type: String, required: true, trim:true },
+          },
+        ],
+        analysis: [
+          {
+            type: { type: String, required: true },
+            date: { type: String, required: true, trim:true },
+            image: { type: String },
+          },
+        ],
+        comment:{type:String}
+      },
+    ],
   },
   { timestamps: true }
 );
@@ -82,7 +85,9 @@ userSchema.methods.checkPass = async function (userPassword) {
 };
 
 userSchema.methods.generateToken = async function () {
-  const token = jwt.sign({ _id: this._id, userType: this.userType }, process.env.JWTKEY
+  const token = jwt.sign(
+    { _id: this._id, userType: this.userType },
+    process.env.JWTKEY
   );
   this.tokens.push({ token });
   await this.save();
