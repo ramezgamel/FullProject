@@ -16,7 +16,7 @@ const routes: Routes = [
   {path:'booking', component:BookingComponent},
   {path:'article', children:[
     {path:"all", component:ArticlesComponent},
-    {path:":id", component:SingleArticleComponent},
+    {path:"single/:articleId", component:SingleArticleComponent},
   ]}
 ];
 

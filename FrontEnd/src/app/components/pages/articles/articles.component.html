@@ -1,8 +1,27 @@
-<div *ngFor="let article of articles" routerLink="/single" style="cursor: pointer;" class="p-3 m-3 bg-white">
-  <h2>{{article?.['title']}}</h2>
-  <hr>
-  <h2>{{article?.['body']}}</h2>
-  <div *ngIf="let c of article.comments">
-    <!-- <h4>{{c?.['comment']}}</h4> -->
+<div class="container">
+  <form [formGroup]="articleForm" (ngSubmit)="addArticle()">
+    <div class="form-group">
+      <input type="text" placeholder="Category" class="form-control" formControlName="category">
+    </div>
+    <div class="form-group my-2">
+      <input type="text" placeholder="Title" class="form-control" formControlName="title">
+    </div>
+    <div class="form-group my-2">
+      <textarea type="text" placeholder="Title" class="form-control" rows="4" formControlName="body"></textarea>
+    </div>
+    <button class="btn btn-success">Post</button>
+  </form>
+
+  <div class="input-group my-2">
+  <input #s type="search" (input)="search(s.value)" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+  <button type="button" class="btn btn-outline-primary">search</button>
+  </div>
+
+  <div *ngFor="let article of articles" routerLink="/single" style="cursor: pointer;" class="p-3 m-3 bg-white">
+    <h2 routerLink="/article/single/{{article?.['_id']}}">{{article?.['title']}}</h2>
+    <hr>
+    <h2>{{article?.['body']}}</h2>
+    <!-- <div *ngIf="let c of article.comments"> -->
+      <!-- <h4>{{c?.['comment']}}</h4> -->
   </div>
 </div>

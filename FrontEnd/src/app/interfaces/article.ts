@@ -8,7 +8,7 @@ export interface Comment {
   _id?:string,
   userId:string,
   body:string,
-  replays: Replay[]
+  replays?: Replay[]
 }
 
 export interface Article {
@@ -16,7 +16,8 @@ export interface Article {
   userId:string,
   title:string,
   body:string,
-  photos:string[],
-  likes:string[],
-  comments:Comment[]
+  category?:string,
+  photos?:string[],
+  likes?:string[],
+  comments?:Comment[]
 }

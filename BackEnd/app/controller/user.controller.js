@@ -23,8 +23,10 @@ class User {
 
   static login = async (req, res) => {
     try {
-      let model = await this.checkModel(req.body.userType);
-      let user = await model.findOne({ email: req.body.email });
+      // let model = await this.checkModel(req.body.userType);
+      let user =
+        (await patientModel.findOne({ email: req.body.email })) ||
+        (await doctorModel.findOne({ email: req.body.email }));
       // let user;
       // if (req.body.userType == "patient") user = await patientModel.findOne({ email: req.body.email });
       // if (req.body.userType == "doctor") user = await doctorModel.findOne({ email: req.body.email });

@@ -1,8 +1,9 @@
 const articleModel = require("../dateBase/models/article.model");
 const resBuilder = require("../helper/resBuilder.helper");
-const mongoose= require("mongoose")
+const mongoose = require("mongoose");
 
 module.exports = class Article {
+  
   static add = async (req, res) => {
     try {
       const article = new articleModel({ ...req.body, userId: req.user._id });
@@ -29,7 +30,9 @@ module.exports = class Article {
 
   static getByCategory = async (req, res) => {
     try {
-      const articles = await articleModel.find({category: req.params.category});
+      const articles = await articleModel.find({
+        category: req.params.category,
+      });
       resBuilder(res, true, articles, "Articles Ready");
     } catch (e) {
       resBuilder(res, false, e, e.message);
@@ -38,8 +41,7 @@ module.exports = class Article {
 
   static single = async (req, res) => {
     try {
-      const articleId = req.params.articleId.slice(0, -1);
-      const article = await articleModel.findById(articleId);
+      const article = await articleModel.findById(req.params.articleId);
       resBuilder(res, true, article, "Article Fetched");
     } catch (e) {
       resBuilder(res, false, e, e.message);
@@ -91,7 +93,6 @@ module.exports = class Article {
         userId: req.user._id,
       });
       await article.save();
-
       resBuilder(res, true, article, "Replay added");
     } catch (e) {
       resBuilder(res, false, e, e.message);
@@ -145,10 +146,13 @@ module.exports = class Article {
 
   static editArticle = async (req, res) => {
     try {
-      const article = await articleModel.findByIdAndUpdate(req.params.articleId, req.body);
+      const article = await articleModel.findByIdAndUpdate(
+        req.params.articleId,
+        req.body
+      );
       if (req.files) {
-        req.files = req.files.map(img => img.path.replace("public\\", ""))
-        article.photos = req.files
+        req.files = req.files.map((img) => img.path.replace("public\\", ""));
+        article.photos = req.files;
       }
       await article.save();
       resBuilder(res, true, article, "Article added");
@@ -161,11 +165,12 @@ module.exports = class Article {
     try {
       const article = await articleModel.findById(req.params.articleId);
       const comment = article.comments.find(
-        (c) => c._id.equals(req.params.commentId) && c.userId.equals(req.user._id)
+        (c) =>
+          c._id.equals(req.params.commentId) && c.userId.equals(req.user._id)
       );
-      if(!comment)throw new Error("Can't Edit Other Person Comment");
+      if (!comment) throw new Error("Can't Edit Other Person Comment");
       comment.body = req.body.body;
-      await article.save()
+      await article.save();
       resBuilder(res, true, article, "like");
     } catch (e) {
       resBuilder(res, false, e, e.message);
@@ -175,16 +180,19 @@ module.exports = class Article {
   static editReplay = async (req, res) => {
     try {
       const article = await articleModel.findById(req.params.articleId);
-      const comment = article.comments.find((c) =>c._id.equals(req.params.commentId));
-      const replay = comment.replays.find(r => r._id.equals(req.params.replayId) && r.userId.equals(req.user._id));
-      if(!replay) throw new Error("Can't Edit Other Person Replay")
-      replay.body = req.body.body
-      await article.save()
+      const comment = article.comments.find((c) =>
+        c._id.equals(req.params.commentId)
+      );
+      const replay = comment.replays.find(
+        (r) =>
+          r._id.equals(req.params.replayId) && r.userId.equals(req.user._id)
+      );
+      if (!replay) throw new Error("Can't Edit Other Person Replay");
+      replay.body = req.body.body;
+      await article.save();
       resBuilder(res, true, article, "like");
     } catch (e) {
       resBuilder(res, false, e, e.message);
     }
   };
-
-  
 };
