@@ -2,9 +2,9 @@
   <div class="card p-4"> 
     <div class=" image d-flex flex-column justify-content-center align-items-center"> 
       <button class="btn btn-secondary"> 
-        <img [src]="myUser.profileImg" height="100" width="100" />
+        <img [src]="myUser?.profileImg" height="100" width="100" />
       </button> 
-      <span class="name mt-3">{{myUser.name}}</span> 
+      <span class="name mt-3">{{myUser?.name}}</span> 
       <span class="idd">@eleanorpena</span> 
       <div class="d-flex flex-row justify-content-center align-items-center gap-2"> 
         <span class="idd1">Oxc4c16a645_b21a</span> 
@@ -33,4 +33,5 @@
       </div> 
     </div> 
   </div>
+  <button class="btn btn-danger" (click)="delAcc()">Delete Account</button>
 </div>

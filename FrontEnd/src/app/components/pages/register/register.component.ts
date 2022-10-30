@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
+  file: any
   constructor(private _data:AuthService, 
       private _router:Router) {
       }
@@ -27,12 +28,12 @@ export class RegisterComponent implements OnInit {
   }
   
   registerForm = new FormGroup({
-    name: new FormControl("", [Validators.required, Validators.minLength(3)]),
-    email: new FormControl("", [Validators.required, Validators.email]),
-    password: new FormControl("", [Validators.required]),
+    name: new FormControl("marwa", [Validators.required, Validators.minLength(3)]),
+    email: new FormControl("m@m.com", [Validators.required, Validators.email]),
+    password: new FormControl("122345", [Validators.required]),
     // Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)
-    gender: new FormControl("", [Validators.required]),
-    dateOfBirth: new FormControl("", [Validators.required])
+    gender: new FormControl("male", [Validators.required]),
+    dateOfBirth: new FormControl("1/1/2020", [Validators.required])
   });
   registerForm2 = new FormGroup({
     name: new FormControl("", [Validators.required, Validators.minLength(3)]),
@@ -60,8 +61,20 @@ export class RegisterComponent implements OnInit {
     this.isSubmitted= true;
     if(this.registerForm.invalid) return;
     this.isLoading = true
-    let data : User|any = this.registerForm.value
-    this._data.register(data,userType).subscribe(
+    let data : User|any = this.registerForm.value;
+    console.log(this.file)
+    let myData:any = new FormData()
+    myData.append("img", this.file, this.file.name);
+// console.log(Object.keys(data))
+// Object.keys(data).forEach(k=> myData.append(k, data[k]))
+// console.log(myData)
+    // Object.entries(data).forEach(
+    // ([key, value]) => {
+    //   console.log(key, value)
+    // }
+    // );
+myData.append("name", data.name)
+    this._data.register(myData,userType).subscribe(
       res => {
         this.isLoading = false;
         this._router.navigate(['login'])
@@ -70,5 +83,9 @@ export class RegisterComponent implements OnInit {
         this.error = err;
         this.isLoading = false
       })
+  };
+
+  changeImg(event: any){
+    this.file = event.target.files[0]
   }
 }

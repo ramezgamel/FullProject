@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth.service';
@@ -9,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class ProfileComponent implements OnInit {
   myUser:any
-  constructor(private _Auth:AuthService) { }
+  constructor(private _Auth:AuthService, private _router:Router) { }
 
   ngOnInit(): void {
     this._Auth.getProfile().subscribe(
@@ -19,5 +20,13 @@ export class ProfileComponent implements OnInit {
       err => console.log(err))
   }
 
-
+  delAcc(){
+    this._Auth.deleteAcc().subscribe(
+      res => {
+        localStorage.removeItem("token")
+        this._router.navigate(['/register'])
+      },
+      err => console.log(err)
+    )
+  }
 }

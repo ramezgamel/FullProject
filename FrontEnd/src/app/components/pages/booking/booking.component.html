@@ -1,13 +1,13 @@
 <div class="container">
   <h2 class="text-center my-2">Booking Form</h2>
-  <form #bookingForm="ngForm">
+  <form #bookingForm="ngForm" (ngSubmit)="booking(bookingForm)">
     <div class="form-group my-2">
       <label for="patientName">Patient Name:</label>
       <input type="text" class="form-control" name="patientName" ngModel>
     </div>
     <div class="form-group my-2">
-      <label for="docName">Doctor Name:</label>
-      <input type="text" class="form-control" name="docName" ngModel>
+      <label for="doctorName">Doctor Name:</label>
+      <input type="text" class="form-control" name="doctorName" ngModel>
     </div>
     <div class="form-group my-2">
       <label for="date">Date:</label>

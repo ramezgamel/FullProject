@@ -23,13 +23,9 @@ class User {
 
   static login = async (req, res) => {
     try {
-      // let model = await this.checkModel(req.body.userType);
       let user =
         (await patientModel.findOne({ email: req.body.email })) ||
         (await doctorModel.findOne({ email: req.body.email }));
-      // let user;
-      // if (req.body.userType == "patient") user = await patientModel.findOne({ email: req.body.email });
-      // if (req.body.userType == "doctor") user = await doctorModel.findOne({ email: req.body.email });
       if (!user) throw new Error("Invalid email or password");
       const isRightPass = await user.checkPass(req.body.password);
       if (!isRightPass) throw new Error("Invalid email or password");
@@ -47,9 +43,6 @@ class User {
     try {
       let model = await this.checkModel(req.user.userType);
       let user = await model.findById(req.user._id);
-      // let user;
-      // if (req.user.userType == "patient") user = await patientModel.findById(req.user._id);
-      // if (req.user.userType == "doctor") user = await doctorModel.findById(req.user._id);
       user.tokens = user.tokens.filter((t) => t.token != req.token);
       await user.save();
       resBuilder(res, true, user, "Logged out");
@@ -62,9 +55,6 @@ class User {
     try {
       let model = await this.checkModel(req.user.userType);
       let user = await model.findById(req.user._id);
-      // let user;
-      // if (req.user.userType == "patient") user = await patientModel.findById(req.user._id);
-      // if (req.user.userType == "doctor") user = await doctorModel.findById(req.user._id);
       user.tokens = [];
       await user.save();
       resBuilder(res, true, user, "Logged out");
@@ -77,11 +67,6 @@ class User {
     try {
       let model = await this.checkModel(req.user.userType);
       let user = await model.findById(req.user._id);
-      // let user;
-      // if (req.user.userType == "patient")
-      //   user = await patientModel.findById(req.user._id);
-      // if (req.user.userType == "doctor")
-      //   user = await doctorModel.findById(req.user._id);
       const articles = await articleModel.find({ userId: req.user._id });
       if (!user) throw new Error(`Can't find user`);
       resBuilder(res, true, { user, articles }, "Profile Fetched");
@@ -146,7 +131,7 @@ class User {
     try {
       const patient = await patientModel.findById(req.user._id);
       if (!patient) throw new Error("Register as Patient");
-      const doctor = await doctorModel.findById(req.params.doctorId);
+      const doctor = await doctorModel.findOne({name: req.params.doctorId});
       if (!doctor) throw new Error("Invalid doctor Id");
       const appointment = bookingModel({
         ...req.body,
@@ -169,14 +154,16 @@ class User {
 
   static editHistory = async (req, res) => {
     try {
-      const doctor = await doctorModel.findById(req.user._id);
+      // const doctor = req.user
       const patient = await patientModel.findById(req.params.patientId);
       const checkAppoint = await bookingModel.findOne({
         patientId: patient._id,
-        doctorId: doctor._id,
+        doctorId: req.user._id,
       });
       if (!checkAppoint) throw new Error("Booking not found");
-      patient.history = patient.history.push(req.body);
+      patient.history.push(req.body);
+      console.log(patient.history);
+      // res.send({ p: patient });
       await patient.save();
       resBuilder(res, true, patient.history, "Added");
     } catch (e) {

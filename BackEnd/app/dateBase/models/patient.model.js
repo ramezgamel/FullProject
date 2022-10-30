@@ -49,18 +49,18 @@ const userSchema = mongoose.Schema(
         treatments: [
           {
             name: { type: String, required: true },
-            start: { type: String, required: true, trim:true },
-            end: { type: String, required: true, trim:true },
+            start: { type: Date, required: true, trim: true },
+            end: { type: Date, required: true, trim: true },
           },
         ],
         analysis: [
           {
             type: { type: String, required: true },
-            date: { type: String, required: true, trim:true },
+            date: { type: Date, required: true, trim: true },
             image: { type: String },
           },
         ],
-        comment:{type:String}
+        comment: { type: String },
       },
     ],
   },

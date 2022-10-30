@@ -6,7 +6,7 @@ module.exports = class Article {
   
   static add = async (req, res) => {
     try {
-      const article = new articleModel({ ...req.body, userId: req.user._id });
+      const article = new articleModel({ ...req.body, userId: req.user._id, userName: req.user.name });
       if (req.files) {
         req.files.forEach((img) => {
           article.photos.push(img.path.replace("public\\", ""));

@@ -33,4 +33,8 @@ export class AuthService {
   editProfile(newData: any): Observable<any> {
     return this._http.patch(`${this.api}editProfile`,newData)
   }
+
+  deleteAcc(): Observable<any>{
+    return this._http.delete(`${this.api}deleteProfile`)
+  }
 }

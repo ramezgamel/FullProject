@@ -11,17 +11,78 @@
     </div>
     <button class="btn btn-success">Post</button>
   </form>
-
+  
   <div class="input-group my-2">
   <input #s type="search" (input)="search(s.value)" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
   <button type="button" class="btn btn-outline-primary">search</button>
   </div>
 
-  <div *ngFor="let article of articles" routerLink="/single" style="cursor: pointer;" class="p-3 m-3 bg-white">
-    <h2 routerLink="/article/single/{{article?.['_id']}}">{{article?.['title']}}</h2>
+  <div class="text-center my-5" *ngIf="fetched">
+    <app-LoadingSpinner></app-LoadingSpinner>
+  </div>
+
+  <div *ngFor="let article of searchArticles" style="cursor: pointer;" class="p-3 m-3 bg-white">
+    <h4 routerLink="/article/single/{{article?.['_id']}}">{{article?.['title']}}</h4>
     <hr>
-    <h2>{{article?.['body']}}</h2>
-    <!-- <div *ngIf="let c of article.comments"> -->
-      <!-- <h4>{{c?.['comment']}}</h4> -->
+    <p class="d-block">{{article?.['body']}}</p>
+    <div>
+      <span>{{article?.['likes']?.length}}</span>
+      <button class="btn btn-danger" (click)="likeArticle(article?.['_id'])">Like</button>
+      <button class="btn btn-primary" >Comment</button>
+    </div>
+    <form #comment="ngForm" class="comment my-1" (ngSubmit)="addNewComment(comment.value, article._id)">
+      <textarea name="body" id="" rows="2" cols="120" ngModel></textarea>
+      <button class="btn btn-primary">Comment</button>
+    </form>
+
+
+    <div class="comments" *ngFor="let comment of article?.comments">
+      <p>{{comment.body}}</p>
+      <hr>
+    </div>
+
+    <!-- ==================================================================== -->
+<!-- <div class="container mt-5 mb-5">
+    <div class="row d-flex align-items-center justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="d-flex justify-content-between p-2 px-3">
+                    <div class="d-flex flex-row align-items-center"> <img [src]="article.photos" width="50" class="rounded-circle">
+                        <div class="d-flex flex-column ml-2"> <span class="font-weight-bold">UserName</span>  </div>
+                    </div>
+                    <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">20 mins</small> <i class="fa fa-ellipsis-h"></i> </div>
+                </div> <img src="https://i.imgur.com/xhzhaGA.jpg" class="img-fluid">
+                <div class="p-2">
+                    <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex flex-row icons d-flex align-items-center"> <i class="fa fa-heart"></i> <i class="fa fa-smile-o ml-2"></i> </div>
+                        <div class="d-flex flex-row muted-color"> <span>2 comments</span> <span class="ml-2">Share</span> </div>
+                    </div>
+                    <hr>
+                    <div class="comments">
+                        <div class="d-flex flex-row mb-2"> <img src="https://i.imgur.com/9AZ2QX1.jpg" width="40" class="rounded-image">
+                            <div class="d-flex flex-column ml-2"> <span class="name">Daniel Frozer</span> <small class="comment-text">I like this alot! thanks alot</small>
+                                <div class="d-flex flex-row align-items-center status"> <small>Like</small> <small>Reply</small> <small>Translate</small> <small>18 mins</small> </div>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row mb-2"> <img src="https://i.imgur.com/1YrCKa1.jpg" width="40" class="rounded-image">
+                            <div class="d-flex flex-column ml-2"> <span class="name">Elizabeth goodmen</span> <small class="comment-text">Thanks for sharing!</small>
+                                <div class="d-flex flex-row align-items-center status"> <small>Like</small> <small>Reply</small> <small>Translate</small> <small>8 mins</small> </div>
+                            </div>
+                        </div>
+                        <div class="comment-input"> <input type="text" class="form-control">
+                            <div class="fonts"> <i class="fa fa-camera"></i> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div> -->
+
+
+
+    <!-- ==================================================================== -->
   </div>
 </div>

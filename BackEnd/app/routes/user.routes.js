@@ -4,7 +4,7 @@ const { Auth, AuthDoctor } = require("../middleware/auth.middleware");
 const upload = require("../middleware/upload.middleware")
 
 
-router.post("/register", User.register);
+router.post("/register",upload.single("img") ,User.register);
 router.post("/login", User.login);
 router.post("/logout", Auth, User.logout);
 router.post("/logoutAll", Auth, User.logoutAll);

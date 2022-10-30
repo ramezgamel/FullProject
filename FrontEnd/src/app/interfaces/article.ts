@@ -6,8 +6,8 @@ export interface Replay {
 
 export interface Comment {
   _id?:string,
-  userId:string,
   body:string,
+  userId:string,
   replays?: Replay[]
 }
 
