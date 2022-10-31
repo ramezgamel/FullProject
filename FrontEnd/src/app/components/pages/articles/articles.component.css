@@ -87,3 +87,14 @@ hr {
   outline: 0;
   box-shadow: none
 }
+
+.span {
+  position: absolute;
+  background-color: red;
+  color: white;
+  top: 5px;
+  right: 5px;
+  padding: 0 5px;
+  border-radius: 5px;
+  font-size: 10px;
+}

@@ -57,11 +57,7 @@ export class ArticlesComponent implements OnInit {
 
   likeArticle(articleId: any){
     this._data.likeArticle(articleId).subscribe(
-      res => {
-        console.log(res);
-        this.getData()
-      },
-      err => console.log(err)
+      res => this.getData()
     )
   };
 
@@ -69,10 +65,21 @@ export class ArticlesComponent implements OnInit {
     let co:Comment = {body: comment.body, userId: this._Auth.myUser.user._id};
     this._data.addComment(co, articleId).subscribe(
       res => {
-        console.log(res);
+        this.getData()
+      },
+      err => console.log(err)
+    )
+  };
+
+  delComment(articleId: any, commentId: any){
+    this._data.deleteComment(articleId, commentId).subscribe(
+      res => {
+        console.log(res)
         this.getData()
       },
       err => console.log(err)
     )
   }
+
+
 }

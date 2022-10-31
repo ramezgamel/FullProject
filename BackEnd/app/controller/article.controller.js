@@ -3,10 +3,9 @@ const resBuilder = require("../helper/resBuilder.helper");
 const mongoose = require("mongoose");
 
 module.exports = class Article {
-  
   static add = async (req, res) => {
     try {
-      const article = new articleModel({ ...req.body, userId: req.user._id, userName: req.user.name });
+      const article = new articleModel({ ...req.body, userId: req.user._id });
       if (req.files) {
         req.files.forEach((img) => {
           article.photos.push(img.path.replace("public\\", ""));
@@ -72,10 +71,15 @@ module.exports = class Article {
   static delComment = async (req, res) => {
     try {
       const article = await articleModel.findById(req.params.articleId);
-      article.comments = article.comments.filter(
-        (com) => com._id == req.params.commentId && com.userId != req.user._id
-      );
-      await article.save();
+      article.comments = article.comments.filter((com) => {
+        console.log(req.params.commentId != com._id);
+        console.log(
+          req.user._id != com.userId && req.params.commentId != com._id
+          /* true    true */
+        );
+        return req.user._id != com.userId && req.params.commentId != com._id;
+      });
+      // await article.save();
       resBuilder(res, true, article.comments, "Comment deleted");
     } catch (e) {
       resBuilder(res, false, e, e.message);

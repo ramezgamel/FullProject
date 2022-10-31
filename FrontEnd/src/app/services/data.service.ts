@@ -26,24 +26,29 @@ export class DataService {
 
   getAppointment(bookingForm: any, doctorId: string){
     return this._Http.post(`http://localhost:4000/booking/${doctorId}`,bookingForm)
-  }
-// ===================================================================================================
-
-  getByCategory(category: string): Observable<any>{
-    return this._Http.get(`${this.api}all/${category}`)
   };
 
   addComment(comment:any,articleId:string): Observable<any>{
     return this._Http.post(`${this.api}addComment/${articleId}`,comment);
   };
 
-  addReplay(replay:Replay,articleID:string, commentID:string): Observable<any>{
-    return this._Http.post(`${this.api}addReplay/${articleID}/${commentID}`,replay);
-  };
-
   likeArticle(articleId:string){
     return this._Http.post(`${this.api}/like/${articleId}`, null)
   };
 
+// ===================================================================================================
+
+  getByCategory(category: string): Observable<any>{
+    return this._Http.get(`${this.api}all/${category}`)
+  };
+
+  addReplay(replay:Replay,articleId:string, commentId:string): Observable<any>{
+    return this._Http.post(`${this.api}addReplay/${articleId}/${commentId}`,replay);
+  };
+
   // b2y functions l delete
+
+  deleteComment(articleId: any, commentId: any){
+    return this._Http.delete(`${this.api}${articleId}/${commentId}`)
+  }
 }

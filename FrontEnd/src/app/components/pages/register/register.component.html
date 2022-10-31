@@ -16,10 +16,10 @@
   <div class="content">
     
   <form [formGroup]="registerForm" (ngSubmit)="handleForm('patient')" *ngIf="selector == 'patient'"> 
-    <div>{{file}}</div>
+    <!-- <div>{{file}}</div>
     <div class="form-group">
       <input type="file" class="form-control" (change)="changeImg($event)">
-    </div>
+    </div> -->
     <div class="form-group">
       <label for="name">Name:</label>
       <input type="text" class="form-control my-2" formControlName="name" placeholder="Name">
@@ -60,12 +60,12 @@
   </form>
 
   <form [formGroup]="registerForm2" (ngSubmit)="handleForm('doctor')" *ngIf="selector == 'doctor'"> 
-    <div class="form-group">
+    <!-- <div class="form-group">
       <input type="file" class="form-control">
-    </div>
+    </div> -->
     <div class="form-group">
-      <label for="name2">Name:</label>
-      <input type="text" class="form-control my-2" formControlName="name2" placeholder="Name">
+      <label for="name">Name:</label>
+      <input type="text" class="form-control my-2" formControlName="name" placeholder="Name">
       <div class="alert alert-danger" *ngIf="name2?.errors && (name2?.touched || isSubmitted)">
         <div *ngIf="name2?.errors?.['required']">Name Required</div>
         <div *ngIf="name2?.errors?.['minLength']">min length 3</div>
@@ -73,16 +73,16 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="email2">Email:</label>
-      <input type="email" class="form-control my-2" formControlName="email2" placeholder="email" >
+      <label for="email">Email:</label>
+      <input type="email" class="form-control my-2" formControlName="email" placeholder="email" >
       <div class="alert alert-danger" *ngIf="email2?.errors && (email2?.touched || isSubmitted)">
         <div *ngIf="email2?.errors?.['required']">email Required</div>
         <div *ngIf="email2?.errors?.['email']">min length 3</div>
       </div>
     </div>
     <div class="form-group">
-      <label for="password2">Password:</label>
-      <input type="password" class="form-control my-2" formControlName="password2" placeholder="password">
+      <label for="password">Password:</label>
+      <input type="password" class="form-control my-2" formControlName="password" placeholder="password">
       <div class="alert alert-danger" *ngIf="password2?.errors && (password2?.touched || isSubmitted)">
         <div *ngIf="password2?.errors?.['required']">Password Is Required</div>
         <div *ngIf="password2?.errors?.['pattern']">Password should have many type of chr</div>
@@ -90,14 +90,14 @@
     </div>
     <div class="form-group">
       <label for="ID">ID:</label>
-      <input type="password" class="form-control my-2" formControlName="ID" placeholder="ID">
+      <input type="text" class="form-control my-2" formControlName="ID" placeholder="ID">
       <div class="alert alert-danger" *ngIf="ID?.errors && (ID?.touched || isSubmitted)">
         <div *ngIf="ID?.errors?.['required']">ID Is Required</div>
       </div>
     </div>
     <div class="form-group">
-      <label for="password">Specialty:</label>
-      <input type="password" class="form-control my-2" formControlName="specialty" placeholder="specialty">
+      <label for="specialty">Specialty:</label>
+      <input type="text" class="form-control my-2" formControlName="specialty" placeholder="specialty">
       <div class="alert alert-danger" *ngIf="specialty?.errors && (specialty?.touched || isSubmitted)">
         <div *ngIf="specialty?.errors?.['required']">Specialty Is Required</div>
       </div>

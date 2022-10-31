@@ -36,12 +36,12 @@ export class RegisterComponent implements OnInit {
     dateOfBirth: new FormControl("1/1/2020", [Validators.required])
   });
   registerForm2 = new FormGroup({
-    name: new FormControl("", [Validators.required, Validators.minLength(3)]),
-    email: new FormControl("", [Validators.required, Validators.email]),
-    password: new FormControl("", [Validators.required]),
+    name: new FormControl("ram", [Validators.required, Validators.minLength(3)]),
+    email: new FormControl("ram@test.com", [Validators.required, Validators.email]),
+    password: new FormControl("1234", [Validators.required]),
     // Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)
-    ID: new FormControl("", [Validators.required]),
-    specialty: new FormControl("", [Validators.required])
+    ID: new FormControl("12311", [Validators.required]),
+    specialty: new FormControl("asd", [Validators.required])
   });
 
   get name() {return this.registerForm.get("name")};
@@ -59,12 +59,18 @@ export class RegisterComponent implements OnInit {
   
   handleForm(userType:string){
     this.isSubmitted= true;
-    if(this.registerForm.invalid) return;
-    this.isLoading = true
-    let data : User|any = this.registerForm.value;
-    console.log(this.file)
-    let myData:any = new FormData()
-    myData.append("img", this.file, this.file.name);
+    this.isLoading = true;
+    let data: User|any
+    if(userType == 'doctor'){
+      data = this.registerForm2.value;
+    }
+    if(userType == 'patient'){
+      data = this.registerForm.value;
+    }
+    // if(this.registerForm.invalid) return;
+    // console.log(this.file)
+    // let myData:any = new FormData()
+    // myData.append("img", this.file, this.file.name);
 // console.log(Object.keys(data))
 // Object.keys(data).forEach(k=> myData.append(k, data[k]))
 // console.log(myData)
@@ -73,8 +79,9 @@ export class RegisterComponent implements OnInit {
     //   console.log(key, value)
     // }
     // );
-myData.append("name", data.name)
-    this._data.register(myData,userType).subscribe(
+// myData.append("name", data.name)
+    console.log(data)
+    this._data.register(data,userType).subscribe(
       res => {
         this.isLoading = false;
         this._router.navigate(['login'])

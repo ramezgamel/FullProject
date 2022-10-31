@@ -14,6 +14,10 @@ class User {
     try {
       let model = await this.checkModel(req.body.userType);
       let user = model(req.body);
+      // if(req.file){
+      //   user.profileImg = req.path .replace("static\\", "")
+      // };
+      console.log(user)
       await user.save();
       resBuilder(res, true, user, "registered");
     } catch (e) {

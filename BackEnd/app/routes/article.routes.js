@@ -25,4 +25,6 @@ router.patch(
   Article.editReplay
 );
 
+router.delete("/:articleId/:commentId", Auth, Article.delComment);
+
 module.exports = router;

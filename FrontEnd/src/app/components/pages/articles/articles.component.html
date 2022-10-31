@@ -34,9 +34,10 @@
       <textarea name="body" id="" rows="2" cols="120" ngModel></textarea>
       <button class="btn btn-primary">Comment</button>
     </form>
-
-
-    <div class="comments" *ngFor="let comment of article?.comments">
+    
+    
+    <div class="comments position-relative" *ngFor="let comment of article?.comments">
+      <span class="span" (click)="delComment(article._id, comment._id)">X</span>
       <p>{{comment.body}}</p>
       <hr>
     </div>

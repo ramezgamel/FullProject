@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const articleSchema = mongoose.Schema(
   {
     userId: { type: mongoose.Schema.Types.ObjectId, required: true },
-    userName:{type: String},
+    // userName:{type: String},
+    // profileImage:{type:String},
     title: { type: String, trim: true, required: true },
     category:{type: String, required:true},
     body: { type: String, trim: true, required: true },
