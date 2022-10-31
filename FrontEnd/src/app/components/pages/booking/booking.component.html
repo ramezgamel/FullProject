@@ -1,5 +1,8 @@
 <div class="container">
   <h2 class="text-center my-2">Booking Form</h2>
+  <div class="alert alert-danger" *ngIf="error">
+    {{error}}
+  </div>
   <form #bookingForm="ngForm" (ngSubmit)="booking(bookingForm)">
     <div class="form-group my-2">
       <label for="patientName">Patient Name:</label>

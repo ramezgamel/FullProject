@@ -36,6 +36,14 @@ export class DataService {
     return this._Http.post(`${this.api}/like/${articleId}`, null)
   };
 
+  editComments(commentId: any, articleId: any, data:any){
+    return this._Http.patch(`${this.api}editComment/${articleId}/${commentId}`, data)
+  };
+
+  delArticle(articleId: any){
+    return this._Http.delete(`${this.api}${articleId}`)
+  }
+
 // ===================================================================================================
 
   getByCategory(category: string): Observable<any>{

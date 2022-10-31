@@ -9,15 +9,16 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './articles.component.html',
   styleUrls: ['./articles.component.css']
 })
-export class ArticlesComponent implements OnInit {
+export class ArticlesComponent {
   articles: Article[] =[];
   searchArticles = this.articles;
-  fetched:boolean = false
-  constructor(private _data:DataService, private _Auth:AuthService) { }
-  
-  ngOnInit(): void {
+  fetched:boolean = false;
+  sEdit: boolean = false;
+
+  constructor(private _data:DataService, private _Auth:AuthService) {
     this.getData();
   }
+
 
   articleForm = new FormGroup({
     category: new FormControl("", [Validators.required]),
@@ -28,7 +29,6 @@ export class ArticlesComponent implements OnInit {
   addArticle(){
     let data : Article|any = this.articleForm.value;
     data.userId = this._Auth.myUser.userId;
-    console.log(data)
     this._data.addArticle(data).subscribe(
       res => {
         console.log(res);
@@ -44,7 +44,6 @@ export class ArticlesComponent implements OnInit {
       res => {
         this.articles = res.data
         this.searchArticles = res.data
-        console.log("fetched")
         this.fetched = false
       },
       err => console.log(err)
@@ -71,6 +70,16 @@ export class ArticlesComponent implements OnInit {
     )
   };
 
+  editComment(commentId:any, articleId:any, newValue:any){
+    this._data.editComments(articleId, commentId, {body: newValue.value}).subscribe(
+      res => {
+        this.getData();
+        this.sEdit = !this.sEdit
+      },
+      err => console.log(err)
+    )
+  }
+
   delComment(articleId: any, commentId: any){
     this._data.deleteComment(articleId, commentId).subscribe(
       res => {
@@ -79,7 +88,18 @@ export class ArticlesComponent implements OnInit {
       },
       err => console.log(err)
     )
+  };
+
+  showEdit(){
+    this.sEdit = !this.sEdit
   }
 
-
+  deleteArticle(articleId: any){
+    this._data.delArticle(articleId).subscribe(
+      res => {
+        this.getData()
+      },
+      err => console.log(err)
+    )
+  }
 }

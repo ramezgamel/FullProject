@@ -1,4 +1,8 @@
 <h4>Title:{{article.title}}</h4>
 <h4>Body:{{article.body}}</h4>
 <h4>{{article.likes?.length}}</h4>
-<h4>Comments:{{article.comments}}</h4>
+<hr>
+<h5>Comments: </h5>
+<div *ngFor="let c of article.comments">
+  <h6>{{c.body}}</h6>
+</div>

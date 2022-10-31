@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class RegisterComponent implements OnInit {
   file: any
-  constructor(private _data:AuthService, 
+  constructor(private _Auth:AuthService, 
       private _router:Router) {
       }
       
@@ -36,8 +36,8 @@ export class RegisterComponent implements OnInit {
     dateOfBirth: new FormControl("1/1/2020", [Validators.required])
   });
   registerForm2 = new FormGroup({
-    name: new FormControl("ram", [Validators.required, Validators.minLength(3)]),
-    email: new FormControl("ram@test.com", [Validators.required, Validators.email]),
+    name: new FormControl("ramez", [Validators.required, Validators.minLength(3)]),
+    email: new FormControl("ram1@test.com", [Validators.required, Validators.email]),
     password: new FormControl("1234", [Validators.required]),
     // Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)
     ID: new FormControl("12311", [Validators.required]),
@@ -58,41 +58,31 @@ export class RegisterComponent implements OnInit {
 
   
   handleForm(userType:string){
+    this.error = ''
     this.isSubmitted= true;
     this.isLoading = true;
     let data: User|any
     if(userType == 'doctor'){
+      if(this.registerForm2.invalid) return
       data = this.registerForm2.value;
     }
     if(userType == 'patient'){
+      if(this.registerForm.invalid) return
       data = this.registerForm.value;
     }
-    // if(this.registerForm.invalid) return;
-    // console.log(this.file)
-    // let myData:any = new FormData()
-    // myData.append("img", this.file, this.file.name);
-// console.log(Object.keys(data))
-// Object.keys(data).forEach(k=> myData.append(k, data[k]))
-// console.log(myData)
-    // Object.entries(data).forEach(
-    // ([key, value]) => {
-    //   console.log(key, value)
-    // }
-    // );
-// myData.append("name", data.name)
-    console.log(data)
-    this._data.register(data,userType).subscribe(
+    this._Auth.register(data,userType).subscribe(
       res => {
+        console.log(res)
         this.isLoading = false;
         this._router.navigate(['login'])
       }, 
       err => {
-        this.error = err;
+        this.error = err.error.message
         this.isLoading = false
       })
   };
 
-  changeImg(event: any){
-    this.file = event.target.files[0]
-  }
+  // changeImg(event: any){
+  //   this.file = event.target.files[0]
+  // }
 }

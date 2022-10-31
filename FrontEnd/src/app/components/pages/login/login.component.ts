@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit {
   constructor(private _Auth:AuthService, private _router:Router) { }
 
   handleLogin(){
+    this.error = ''
     this.isSubmitted = true
     this.isLoading = true
     if(this.loginForm.invalid) return;
