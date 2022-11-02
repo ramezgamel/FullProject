@@ -49,8 +49,11 @@ module.exports = class Article {
 
   static del = async (req, res) => {
     try {
-      const id = req.params.articleId.slice(0, -1);
-      const article = await articleModel.findByIdAndDelete(id);
+      const article = await articleModel.findById(req.params.articleId)
+      if (!article.userId.equals(req.user._id))
+        throw new Error("Can't remove Article");
+      await articleModel.findByIdAndDelete(req.params.articleId)
+      console.log(req.user._id)
       resBuilder(res, true, article, "Article deleted");
     } catch (e) {
       resBuilder(res, false, e, e.message);
@@ -72,14 +75,9 @@ module.exports = class Article {
     try {
       const article = await articleModel.findById(req.params.articleId);
       article.comments = article.comments.filter((com) => {
-        console.log(req.params.commentId != com._id);
-        console.log(
-          req.user._id != com.userId && req.params.commentId != com._id
-          /* true    true */
-        );
         return req.user._id != com.userId && req.params.commentId != com._id;
       });
-      // await article.save();
+      await article.save();
       resBuilder(res, true, article.comments, "Comment deleted");
     } catch (e) {
       resBuilder(res, false, e, e.message);
@@ -175,7 +173,7 @@ module.exports = class Article {
       if (!comment) throw new Error("Can't Edit Other Person Comment");
       comment.body = req.body.body;
       await article.save();
-      resBuilder(res, true, article, "like");
+      resBuilder(res, true, comment, "like");
     } catch (e) {
       resBuilder(res, false, e, e.message);
     }

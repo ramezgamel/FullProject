@@ -26,5 +26,6 @@ router.patch(
 );
 
 router.delete("/:articleId/:commentId", Auth, Article.delComment);
+router.delete("/:articleId", Auth, Article.del);
 
 module.exports = router;

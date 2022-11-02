@@ -15,7 +15,7 @@ export class ArticlesComponent {
   fetched:boolean = false;
   sEdit: boolean = false;
 
-  constructor(private _data:DataService, private _Auth:AuthService) {
+  constructor(private _data:DataService, public _Auth:AuthService) {
     this.getData();
   }
 

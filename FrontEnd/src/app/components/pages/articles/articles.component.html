@@ -11,6 +11,45 @@
     </div>
     <button class="btn btn-success">Post</button>
   </form>
+
+  <div class="article rounded-4 border p-3 mt-3" *ngFor="let article of searchArticles">
+    <span class="settings">
+      <li></li>
+      <li></li>
+      <li></li>
+    </span>
+    <div class="person d-flex align-items-center">
+      <img class="rounded-circle avatar me-3">
+      <div>{{this._Auth.myUser.user.name}}</div>
+    </div>
+    <div>
+      <h4 class="text-center">{{article.title}}</h4>
+      <p>{{article.body}}</p>
+    </div>
+    <div class="control d-flex justify-content-between align-items-center mt-2">
+      <div class="like">
+        <span class="me-2">5</span>
+        <span style="cursor: pointer;">Like</span>
+      </div>
+      <p style="cursor: pointer;">{{article.comments?.length}} comments</p>
+    </div>
+    <hr>
+    <div class="comments">
+      <div class="write-comment">
+        <img src="" alt="" class="">
+
+      </div>
+      <div class="comment" *ngFor="let c of article.comments">
+          <img src="" alt="" class="rounded-circle">
+          <p>{{c.body}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div class="container">
+ 
   
   <div class="input-group my-2">
   <input #s type="search" (input)="search(s.value)" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
@@ -45,7 +84,23 @@
         <input type="text" name="body" #name>
         <button class="btn btn-success" (click)="editComment(article._id, comment._id, name)">done</button>
       </div>
-    </div>
+    </div> 
+  </div>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- ==================================================================== -->
 <!-- <div class="container mt-5 mb-5">
@@ -90,5 +145,4 @@
 
 
     <!-- ==================================================================== -->
-  </div>
-</div>
+
